@@ -1,5 +1,28 @@
 const body = document.querySelector('body')
 
+const cards = [
+    'apple',
+    'banana',
+    'orange',
+    'pineapple',
+    'watermelon',
+    'melon',
+    'strawberry',
+    'blueberry',
+]
+
+const cardsDoubles = cards.flatMap((card) => [card, card])
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [array[i], array[j]] = [array[j], array[i]]
+    }
+
+    return array
+}
+
 function createApp(){
     let app = document.createElement('div')
     app.appendChild(createHeader())
@@ -41,7 +64,11 @@ function createMain(){
     let main_inner = document.createElement('div')
     main_inner.classList.add('main_inner')
 
-    main_inner.appendChild(createCard())
+    shuffle(cardsDoubles)
+
+    for(let i = 0; i < 16; i++){
+        main_inner.appendChild(createCard(cardsDoubles[i]))
+    }
 
     container.appendChild(main_inner)
 
@@ -56,11 +83,24 @@ function createFooter(){
     return footer
 }
 
-function createCard(){
+function createCard(cardValue){
     let card = document.createElement('div')
     card.classList.add('card')
 
+    let card_front = document.createElement('div')
+    card_front.classList.add('card_front')
+
+    let card_back = document.createElement('div')
+    card_back.classList.add('card_back')
+
+    card.appendChild(card_front)
+    card.appendChild(card_back)
+
+    card.setAttribute("data-card", cardValue)
+ 
+    console.log(cardValue)
     return card
+
 }
 
 body.appendChild(createApp())
