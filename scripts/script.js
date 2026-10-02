@@ -13,6 +13,10 @@ const cards = [
 
 const cardsDoubles = cards.flatMap((card) => [card, card])
 
+let selectedCards = []
+
+let lockBoard = false;
+
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -87,18 +91,41 @@ function createCard(cardValue){
     let card = document.createElement('div')
     card.classList.add('card')
 
+    card.addEventListener('click', () => {
+        if(!card.classList.contains('open') && !lockBoard){
+            card.classList.add('open')
+            selectedCards.push(card)
+            if (selectedCards.length === 2) {
+                lockBoard = true
+                if(selectedCards[0].dataset.card === selectedCards[1].dataset.card){
+                    console.log('Пара')
+                    selectedCards.length = 0
+                    lockBoard = false
+                } else {
+                    setTimeout(() => {
+                        selectedCards[0].classList.remove('open')
+                        selectedCards[1].classList.remove('open')
+                        selectedCards.length = 0
+                        lockBoard = false
+                    }, 1000)
+                }
+            } 
+        }
+    })
+
     let card_front = document.createElement('div')
     card_front.classList.add('card_front')
 
     let card_back = document.createElement('div')
     card_back.classList.add('card_back')
 
+    card_back.textContent = cardValue
+
     card.appendChild(card_front)
     card.appendChild(card_back)
 
     card.setAttribute("data-card", cardValue)
  
-    console.log(cardValue)
     return card
 
 }
