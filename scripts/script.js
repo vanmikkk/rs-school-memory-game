@@ -153,7 +153,11 @@ function createCard(cardValue){
     let card_back = document.createElement('div')
     card_back.classList.add('card_back')
 
-    card_back.textContent = cardValue
+    let cardImage = document.createElement('img')
+    cardImage.src = `images/${cardValue}.png`
+    cardImage.alt = cardValue
+
+    card_back.appendChild(cardImage)
 
     card.appendChild(card_front)
     card.appendChild(card_back)
